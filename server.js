@@ -28,7 +28,7 @@ app.get("/api/timestamp", function(req, res) {
   const currentDate = new Date();
   const date = currentDate.toISOString().slice(0, 10);
   let unix = new Date(date).getTime();
-  let utc = new Date(unix).toUTCString();
+  let utc = new Date().toUTCString();
 
   res.json({unix: unix, utc: utc});
 })
