@@ -24,23 +24,32 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/timestamp", function(req, res) {
+  const currentDate = new Date();
+  const date = currentDate.toISOString().slice(0, 10);
+  let unix = new Date(date).getTime();
+  let utc = new Date(unix).toUTCString();
+
+  res.json({unix: unix, utc: utc});
+})
+
 app.get("/api/timestamp/:date", function(req, res) {
-  let date = req.params.date;
-  let regDate = /^\d{4}-\d{2}-\d{2}$/;
-  let regUnix = /^[0-9]*$/;
+  const date = req.params.date;
+  const regDate = /^\d{4}-\d{2}-\d{2}$/;
+  const regUnix = /^[0-9]*$/;
   let unix;
   let utc;
 
   if (date.match(regUnix)) {
     const parseDate = parseInt(date);
     utc = new Date(parseDate).toUTCString();
-    res.send({unix: date, utc: utc})
+    res.json({unix: date, utc: utc})
   } else if (!date.match(regDate)) {
-    res.send({error: "Invalid Date"});
+    res.json({error: "Invalid Date"});
   } else {
     unix = new Date(date).getTime();
     utc = new Date(unix).toUTCString();
-    res.send({unix: unix, utc: utc});
+    res.json({unix: unix, utc: utc});
   }
 })
 
